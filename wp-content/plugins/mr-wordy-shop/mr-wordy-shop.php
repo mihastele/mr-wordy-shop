@@ -157,7 +157,7 @@ final class MR_Wordy_Shop_Plugin {
 		}
 
 		if ( isset( $_POST['mr_wordy_shop_price'] ) ) {
-			$price = preg_replace( '/[^0-9.,]/', '', wp_unslash( $_POST['mr_wordy_shop_price'] ) );
+			$price = self::sanitize_price( wp_unslash( $_POST['mr_wordy_shop_price'] ) );
 			update_post_meta( $post_id, self::META_PRICE, $price );
 		}
 
@@ -206,7 +206,7 @@ final class MR_Wordy_Shop_Plugin {
 
 		add_settings_field(
 			'currency_code',
-			__( 'Currency code', 'mr-wordy-shop' ),
+			__( 'Currency Code', 'mr-wordy-shop' ),
 			array( __CLASS__, 'render_currency_field' ),
 			'mr-wordy-shop-settings',
 			'mr_wordy_shop_general'
@@ -374,6 +374,22 @@ final class MR_Wordy_Shop_Plugin {
 	 */
 	private static function get_settings() {
 		return wp_parse_args( get_option( self::OPTION_NAME, array() ), self::get_default_settings() );
+	}
+
+	/**
+	 * Sanitize a product price into a normalized decimal string.
+	 *
+	 * @param string $price Raw price value.
+	 * @return string
+	 */
+	private static function sanitize_price( $price ) {
+		$price = str_replace( ',', '.', trim( sanitize_text_field( $price ) ) );
+
+		if ( ! preg_match( '/^\d+(?:\.\d{1,2})?$/', $price ) ) {
+			return '';
+		}
+
+		return $price;
 	}
 
 	/**
