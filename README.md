@@ -76,6 +76,19 @@ Because the development compose file bind-mounts `./wp-content/plugins/mr-wordy-
 
 The production image uses `Dockerfile.prod` to copy the plugin into the WordPress image so the plugin is already present in the container before activation.
 
+### Create an installable plugin ZIP
+
+If you want to install the plugin through **Plugins → Add New Plugin → Upload Plugin**, create a ZIP whose top-level folder is `mr-wordy-shop/`.
+
+Example:
+
+```bash
+cd wp-content/plugins
+zip -r /tmp/mr-wordy-shop.zip mr-wordy-shop
+```
+
+Then upload `/tmp/mr-wordy-shop.zip` in WordPress admin. Do not zip the whole repository root, because WordPress expects the plugin files to sit directly inside a single plugin directory.
+
 ## What the Plugin Adds
 
 ### 1. Products post type
