@@ -27,6 +27,7 @@ Features:
 2. Activate **MR Wordy Shop** from the WordPress admin
 3. Add products under **Shop**
 4. Insert `[mr_wordy_shop_products]` into any page or post
+5. To show the shop at the site root, create a page with the shortcode and assign it as the homepage under **Settings > Reading**
 
 == Shortcode ==
 

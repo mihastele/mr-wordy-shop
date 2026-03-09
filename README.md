@@ -31,6 +31,51 @@ This repository currently provides the **foundation layer** for a custom shop. I
 3. Activate **MR Wordy Shop**.
 4. After activation, a **Shop** menu will appear in the admin sidebar.
 
+### Make the plugin installable in Docker
+
+This repository now includes two Docker Compose setups:
+
+- `docker-compose.dev.yml` for local development with the plugin bind-mounted from this repository
+- `docker-compose.prod.yml` for a production-oriented image that bakes the plugin into WordPress
+
+#### Development
+
+1. Start the stack:
+
+   ```bash
+   docker compose -f docker-compose.dev.yml up -d
+   ```
+
+2. Open `http://localhost:8080` and finish the normal WordPress installer.
+3. In the WordPress admin, activate **MR Wordy Shop** from **Plugins**.
+
+Because the development compose file bind-mounts `./wp-content/plugins/mr-wordy-shop`, changes you make in this repository are available in the running container immediately.
+
+#### Production-style deployment
+
+1. Copy the environment template and change the passwords:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Review the values in `.env`, especially:
+   - `WORDPRESS_PORT`
+   - `WORDPRESS_DB_NAME`
+   - `WORDPRESS_DB_USER`
+   - `WORDPRESS_DB_PASSWORD`
+   - `MARIADB_ROOT_PASSWORD`
+3. Build and start the stack:
+
+   ```bash
+   docker compose --env-file .env -f docker-compose.prod.yml up -d --build
+   ```
+
+4. Open `http://localhost:${WORDPRESS_PORT}` (or the host/port you mapped) and finish the normal WordPress installer.
+5. Activate **MR Wordy Shop** from **Plugins**.
+
+The production image uses `Dockerfile.prod` to copy the plugin into the WordPress image so the plugin is already present in the container before activation.
+
 ## What the Plugin Adds
 
 ### 1. Products post type
@@ -135,6 +180,26 @@ Filter products by category slug:
 ```text
 [mr_wordy_shop_products limit="8" category="featured"]
 ```
+
+### Put the shop UI at the site root
+
+Yes — the shop UI can live at the root URL without exposing a PHP filename in the public URL.
+
+The recommended WordPress-native setup is:
+
+1. Create a page such as **Shop**.
+2. Add the shortcode:
+
+   ```text
+   [mr_wordy_shop_products]
+   ```
+
+3. Go to **Settings → Reading**.
+4. Set **Your homepage displays** to **A static page**.
+5. Choose your **Shop** page as the homepage.
+6. Go to **Settings → Permalinks** and save your preferred permalink structure.
+
+After that, visitors can reach the storefront at `/` instead of a query-string or PHP file path. The plugin already renders through normal WordPress pages, so no separate PHP entry file is required for the shop UI.
 
 ## Customization and Extensibility
 

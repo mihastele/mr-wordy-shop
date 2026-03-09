@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: wordpress
+      MARIADB_PASSWORD: wordpress
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - dev_db_data:/var/lib/mysql
+
+  wordpress:
+    image: wordpress:6.7.2-php8.2-apache
+    depends_on:
+      - db
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - dev_wordpress_data:/var/www/html
+      - ./wp-content/plugins/mr-wordy-shop:/var/www/html/wp-content/plugins/mr-wordy-shop
+
+volumes:
+  dev_db_data:
+  dev_wordpress_data:
