@@ -74,7 +74,7 @@ Because the development compose file bind-mounts `./wp-content/plugins/mr-wordy-
 4. Open `http://localhost:${WORDPRESS_PORT}` (or the host/port you mapped) and finish the normal WordPress installer.
 5. Activate **MR Wordy Shop** from **Plugins**.
 
-The production image uses `Dockerfile.prod` to copy the plugin into the WordPress image so the plugin is already present in the container before activation.
+The production image uses `Dockerfile.prod` to copy the plugin into the WordPress image template at `/usr/src/wordpress/wp-content/plugins/mr-wordy-shop`. On first container start, the official WordPress image copies that template into the runtime web root, so the plugin is already present in the container before activation.
 
 ### Create an installable plugin ZIP
 

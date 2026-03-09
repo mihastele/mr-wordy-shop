@@ -5,8 +5,8 @@ services:
     environment:
       MARIADB_DATABASE: ${WORDPRESS_DB_NAME:-wordpress}
       MARIADB_USER: ${WORDPRESS_DB_USER:-wordpress}
-      MARIADB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-change-me}
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-change-me-root}
+      MARIADB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-REPLACE_WITH_SECURE_DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-REPLACE_WITH_SECURE_ROOT_PASSWORD}
     volumes:
       - prod_db_data:/var/lib/mysql
 
@@ -22,7 +22,7 @@ services:
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-wordpress}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-change-me}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-REPLACE_WITH_SECURE_DB_PASSWORD}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-wordpress}
     volumes:
       - prod_uploads_data:/var/www/html/wp-content/uploads
