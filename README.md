@@ -53,13 +53,13 @@ Because the development compose file bind-mounts `./wp-content/plugins/mr-wordy-
 
 #### Production-style deployment
 
-1. Copy the environment template and change the passwords:
+1. Copy the environment template:
 
    ```bash
    cp .env.example .env
    ```
 
-2. Review the values in `.env`, especially:
+2. Edit `.env` and replace all `CHANGEME_*` password placeholders with strong secrets. Review these values in particular:
    - `WORDPRESS_PORT`
    - `WORDPRESS_DB_NAME`
    - `WORDPRESS_DB_USER`
