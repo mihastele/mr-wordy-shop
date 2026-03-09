@@ -71,7 +71,7 @@ Because the development compose file bind-mounts `./wp-content/plugins/mr-wordy-
    docker compose --env-file .env -f docker-compose.prod.yml up -d --build
    ```
 
-4. Open `http://localhost:${WORDPRESS_PORT}` (or the host/port you mapped) and finish the normal WordPress installer.
+4. Open `http://localhost:8080` by default, or use the host/port you configured in `.env`, and finish the normal WordPress installer.
 5. Activate **MR Wordy Shop** from **Plugins**.
 
 The production image uses `Dockerfile.prod` to copy the plugin into the WordPress image template at `/usr/src/wordpress/wp-content/plugins/mr-wordy-shop`. On first container start, the official WordPress image copies that template into the runtime web root, so the plugin is already present in the container before activation.

@@ -1,3 +1,4 @@
+# Local development only. Do not expose this stack to untrusted networks with the default credentials.
 services:
   db:
     image: mariadb:11.4
