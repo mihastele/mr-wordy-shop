@@ -267,7 +267,7 @@ final class MRWS_Cookie_Consent {
 	 */
 	private static function get_default_settings() {
 		return array(
-			'enabled'          => true,
+			'enabled'          => false,
 			'message'          => __( 'We use cookies to enhance your browsing experience. By continuing to use this site you agree to our use of cookies.', 'mr-wordy-shop' ),
 			'policy_page'      => 0,
 			'policy_link_text' => __( 'Learn more', 'mr-wordy-shop' ),

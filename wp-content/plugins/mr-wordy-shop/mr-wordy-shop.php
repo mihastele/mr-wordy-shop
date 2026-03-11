@@ -98,7 +98,7 @@ final class MR_Wordy_Shop_Plugin {
 	public static function render_admin_column( $column, $post_id ) {
 		if ( 'mrws_thumb' === $column ) {
 			$thumb = get_the_post_thumbnail( $post_id, array( 60, 60 ) );
-			echo $thumb ? $thumb : '<span class="dashicons dashicons-format-image" style="color:#ccc;font-size:32px"></span>';
+			echo $thumb ? wp_kses_post( $thumb ) : '<span class="dashicons dashicons-format-image" style="color:#ccc;font-size:32px"></span>';
 		}
 
 		if ( 'mrws_price' === $column ) {

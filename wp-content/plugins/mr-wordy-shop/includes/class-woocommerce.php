@@ -152,7 +152,7 @@ final class MRWS_WooCommerce {
 					$url   = esc_url( $wc_product->add_to_cart_url() );
 					$label = esc_html( $wc_product->add_to_cart_text() );
 					$inner .= '<div class="mr-wordy-shop-product__actions">';
-					$inner .= '<a href="' . $url . '" class="mr-wordy-shop-btn mr-wordy-shop-btn--primary" data-product_id="' . $wc_id . '">' . $label . '</a>';
+					$inner .= '<a href="' . $url . '" class="mr-wordy-shop-btn mr-wordy-shop-btn--primary" data-product-id="' . $wc_id . '">' . $label . '</a>';
 					$inner .= '</div>';
 				}
 			}
