@@ -3,7 +3,7 @@
  * Plugin Name: MR Wordy Shop
  * Plugin URI:  https://github.com/mihastele/mr-wordy-shop
  * Description: A customizable e-commerce foundation for WordPress with products, storefront rendering, and extension hooks.
- * Version:     0.1.0
+ * Version:     0.2.0
  * Author:      Miha
  * License:     MIT
  * License URI: https://opensource.org/licenses/MIT
@@ -13,6 +13,13 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+/* ------------------------------------------------------------------
+ *  Include helper classes.
+ * ------------------------------------------------------------------ */
+require_once __DIR__ . '/includes/class-cookie-consent.php';
+require_once __DIR__ . '/includes/class-customizer.php';
+require_once __DIR__ . '/includes/class-woocommerce.php';
 
 final class MR_Wordy_Shop_Plugin {
 	const OPTION_GROUP = 'mr_wordy_shop_options';
@@ -33,6 +40,72 @@ final class MR_Wordy_Shop_Plugin {
 		add_action( 'admin_menu', array( __CLASS__, 'register_settings_page' ) );
 		add_action( 'admin_init', array( __CLASS__, 'register_settings' ) );
 		add_shortcode( 'mr_wordy_shop_products', array( __CLASS__, 'render_products_shortcode' ) );
+
+		/* Enqueue front-end storefront stylesheet. */
+		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_storefront_assets' ) );
+
+		/* Admin product list – show thumbnail column. */
+		add_filter( 'manage_mrws_product_posts_columns', array( __CLASS__, 'add_admin_columns' ) );
+		add_action( 'manage_mrws_product_posts_custom_column', array( __CLASS__, 'render_admin_column' ), 10, 2 );
+
+		/* Initialise sub-modules. */
+		MRWS_Cookie_Consent::init();
+		MRWS_Customizer::init();
+		MRWS_WooCommerce::init();
+	}
+
+	/**
+	 * Enqueue front-end storefront CSS.
+	 *
+	 * @return void
+	 */
+	public static function enqueue_storefront_assets() {
+		wp_enqueue_style(
+			'mrws-storefront',
+			plugin_dir_url( __FILE__ ) . 'assets/css/storefront.css',
+			array(),
+			'0.2.0'
+		);
+	}
+
+	/**
+	 * Add thumbnail and price columns to the admin product list.
+	 *
+	 * @param array $columns Existing columns.
+	 * @return array
+	 */
+	public static function add_admin_columns( $columns ) {
+		$new = array();
+		foreach ( $columns as $key => $label ) {
+			if ( 'title' === $key ) {
+				$new['mrws_thumb'] = __( 'Image', 'mr-wordy-shop' );
+			}
+			$new[ $key ] = $label;
+			if ( 'title' === $key ) {
+				$new['mrws_price'] = __( 'Price', 'mr-wordy-shop' );
+			}
+		}
+		return $new;
+	}
+
+	/**
+	 * Render custom admin columns.
+	 *
+	 * @param string $column  Column slug.
+	 * @param int    $post_id Post ID.
+	 * @return void
+	 */
+	public static function render_admin_column( $column, $post_id ) {
+		if ( 'mrws_thumb' === $column ) {
+			$thumb = get_the_post_thumbnail( $post_id, array( 60, 60 ) );
+			echo $thumb ? $thumb : '<span class="dashicons dashicons-format-image" style="color:#ccc;font-size:32px"></span>';
+		}
+
+		if ( 'mrws_price' === $column ) {
+			$price    = get_post_meta( $post_id, self::META_PRICE, true );
+			$settings = self::get_settings();
+			echo '' !== $price ? esc_html( $settings['currency_code'] . ' ' . $price ) : '—';
+		}
 	}
 
 	/**
@@ -341,7 +414,16 @@ final class MR_Wordy_Shop_Plugin {
 
 			$price   = get_post_meta( get_the_ID(), self::META_PRICE, true );
 			$excerpt = get_the_excerpt();
-			$output .= '<article class="mr-wordy-shop-product">';
+			$output .= '<article class="mr-wordy-shop-product" data-product-id="' . esc_attr( get_the_ID() ) . '">';
+
+			/* Product image */
+			if ( has_post_thumbnail() ) {
+				$output .= '<div class="mr-wordy-shop-product__image">';
+				$output .= '<a href="' . esc_url( get_permalink() ) . '">' . get_the_post_thumbnail( get_the_ID(), 'medium' ) . '</a>';
+				$output .= '</div>';
+			}
+
+			$output .= '<div class="mr-wordy-shop-product__body">';
 			$output .= '<h2 class="mr-wordy-shop-product__title"><a href="' . esc_url( get_permalink() ) . '">' . esc_html( get_the_title() ) . '</a></h2>';
 
 			if ( '' !== $excerpt ) {
@@ -357,6 +439,12 @@ final class MR_Wordy_Shop_Plugin {
 				) . '</p>';
 			}
 
+			/* View product link */
+			$output .= '<div class="mr-wordy-shop-product__actions">';
+			$output .= '<a href="' . esc_url( get_permalink() ) . '" class="mr-wordy-shop-btn mr-wordy-shop-btn--outline mr-wordy-shop-btn--small">' . esc_html__( 'View Product', 'mr-wordy-shop' ) . '</a>';
+			$output .= '</div>';
+
+			$output .= '</div>'; /* .mr-wordy-shop-product__body */
 			$output .= '</article>';
 		}
 
@@ -372,7 +460,7 @@ final class MR_Wordy_Shop_Plugin {
 	 *
 	 * @return array
 	 */
-	private static function get_settings() {
+	public static function get_settings() {
 		return wp_parse_args( get_option( self::OPTION_NAME, array() ), self::get_default_settings() );
 	}
 
