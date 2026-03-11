@@ -1,23 +1,26 @@
 # MR Wordy Shop
 
-MR Wordy Shop is a lightweight WordPress plugin scaffold for building a highly customizable e-commerce experience.
+MR Wordy Shop is a modern WordPress plugin for building a highly customizable e-commerce experience with a sleek, card-based storefront.
 
-The current implementation focuses on the core building blocks needed to start a shop project:
+The plugin provides:
 
-- a custom **Products** content type
+- a custom **Products** content type with image and price columns in admin
 - a **Product Categories** taxonomy
 - product fields for **price** and **SKU**
-- shop-wide settings for **currency** and **catalog pagination**
-- a storefront shortcode for rendering product listings
+- a **sleek card-based product grid** with responsive CSS and hover effects
+- **cookie consent banner** with admin settings (GDPR-ready)
+- **WordPress Customizer** integration for colours, layout, and design
+- **WooCommerce integration** – auto-sync products and "Add to Cart" buttons
+- shop-wide settings for **currency**, **catalog pagination**, **cookie policy**, and **WooCommerce**
+- a storefront shortcode for rendering product listings with featured images
 - WordPress hooks and filters for customization
-
-This repository currently provides the **foundation layer** for a custom shop. It does **not** yet include a full cart, checkout, shipping, inventory, or payment workflow.
 
 ## Requirements
 
 - WordPress 6.0+
 - PHP supported by your WordPress installation
 - A WordPress site where you can install custom plugins
+- (Optional) WooCommerce for cart, checkout, and payment support
 
 ## Installation
 
@@ -126,8 +129,47 @@ Available settings:
 
 - **Currency Code** — defaults to `USD`
 - **Products per page** — defaults to `12`
+- **Cookie Consent** — enable/disable banner, message text, policy page, link text
+- **WooCommerce Integration** — auto-sync products, show "Add to Cart" buttons
 
 These settings affect default storefront rendering and can be overridden by customizations.
+
+### 4. Cookie consent banner
+
+Enable the cookie consent banner under **Shop → Settings → Cookie Consent**.
+
+The banner shows a GDPR-compliant consent dialog to visitors with "Accept" and "Decline" buttons.
+The user's choice is stored in `localStorage` so the banner is not shown again.
+
+Configure:
+
+- **Enable banner** — toggle on/off
+- **Banner message** — the text shown to visitors (basic HTML allowed)
+- **Cookie policy page** — link to a page with your cookie or privacy policy
+- **Policy link text** — the anchor text for the policy link
+
+### 5. Design customizer
+
+Go to **Appearance → Customize → MR Wordy Shop** to adjust:
+
+- **Primary colour** — accent colour used for prices, buttons, and links
+- **Card background** — background colour for product cards
+- **Text colour** — main text colour
+- **Grid columns** — 2, 3, or 4 columns
+- **Card border radius** — rounded corners for product cards
+
+Changes preview live in the Customizer and take effect immediately on publish.
+
+### 6. WooCommerce integration
+
+When WooCommerce is active, you can enable:
+
+- **Auto-sync products** — automatically creates/updates a WooCommerce simple product when you save a Shop product
+- **Add to Cart button** — shows a WooCommerce "Add to Cart" button on each product card
+
+Enable these under **Shop → Settings → WooCommerce Integration**.
+
+Without WooCommerce active, the settings section displays a notice that WooCommerce is required.
 
 ## Creating Products
 
@@ -278,39 +320,59 @@ A common setup is:
 1. Use the plugin for data modeling and admin management.
 2. Use your theme for page layout and visual presentation.
 3. Insert the shortcode into a page such as **Shop**, **Featured Products**, or **Catalog**.
-4. Add CSS in your theme to style:
-   - `.mr-wordy-shop-products`
-   - `.mr-wordy-shop-product`
-   - `.mr-wordy-shop-product__title`
-   - `.mr-wordy-shop-product__excerpt`
-   - `.mr-wordy-shop-product__price`
+4. The plugin ships with sleek default styling. Optionally add CSS in your theme to override:
+   - `.mr-wordy-shop-products` — product grid container
+   - `.mr-wordy-shop-product` — individual product card
+   - `.mr-wordy-shop-product__image` — product thumbnail
+   - `.mr-wordy-shop-product__body` — card body
+   - `.mr-wordy-shop-product__title` — product title
+   - `.mr-wordy-shop-product__excerpt` — product description
+   - `.mr-wordy-shop-product__price` — price display
+   - `.mr-wordy-shop-product__actions` — button container
+   - `.mr-wordy-shop-btn` — button base class
+
+You can also use the WordPress Customizer (**Appearance → Customize → MR Wordy Shop**) to adjust colours, layout, and card styling without writing CSS.
 
 ## Current Scope
 
 The plugin currently provides:
 
-- product modeling
+- product modeling with featured images
 - product categorization
-- shop settings
-- product listing output
+- sleek card-based storefront design
+- shop settings (currency, pagination, cookie consent, WooCommerce)
+- cookie consent banner (GDPR-ready)
+- WordPress Customizer design controls
+- WooCommerce integration (product sync, Add to Cart)
+- enhanced admin product list (image and price columns)
+- product listing output with images and "View Product" buttons
 - extension hooks
 
 The plugin does not yet provide:
 
-- cart management
-- checkout flows
-- payment processing
 - shipping logic
 - tax calculation
 - stock management
 - customer accounts
 
+When WooCommerce is active and integration is enabled, cart, checkout, and payment workflows are handled by WooCommerce.
+
 ## Repository Structure
 
 ```text
 wp-content/plugins/mr-wordy-shop/
-├── mr-wordy-shop.php
-└── readme.txt
+├── mr-wordy-shop.php                  # Main plugin file
+├── readme.txt                         # WordPress plugin readme
+├── assets/
+│   ├── css/
+│   │   ├── storefront.css             # Sleek product grid styles
+│   │   └── cookie-consent.css         # Cookie consent banner styles
+│   └── js/
+│       └── cookie-consent.js          # Cookie consent banner logic
+└── includes/
+    ├── class-cookie-consent.php       # Cookie consent settings & rendering
+    ├── class-customizer.php           # WordPress Customizer integration
+    └── class-woocommerce.php          # WooCommerce integration
 ```
 
 ## Development Notes

@@ -1,0 +1,129 @@
+/**
+ * MR Wordy Shop – Cookie Consent Banner Styles
+ */
+
+/* ------------------------------------------------------------------ */
+/*  Overlay backdrop (optional)                                        */
+/* ------------------------------------------------------------------ */
+.mrws-cookie-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.35);
+	z-index: 999998;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.mrws-cookie-overlay--visible {
+	opacity: 1;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Banner                                                             */
+/* ------------------------------------------------------------------ */
+.mrws-cookie-banner {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 999999;
+	background: #ffffff;
+	box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+	padding: 24px 32px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 24px;
+	flex-wrap: wrap;
+	transform: translateY(100%);
+	transition: transform 0.4s ease;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+		Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+.mrws-cookie-banner--visible {
+	transform: translateY(0);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Banner text                                                        */
+/* ------------------------------------------------------------------ */
+.mrws-cookie-banner__text {
+	flex: 1;
+	font-size: 0.9375rem;
+	line-height: 1.6;
+	color: #334155;
+	min-width: 240px;
+}
+
+.mrws-cookie-banner__text a {
+	color: var(--mrws-primary, #4f46e5);
+	text-decoration: underline;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Banner actions                                                     */
+/* ------------------------------------------------------------------ */
+.mrws-cookie-banner__actions {
+	display: flex;
+	gap: 12px;
+	flex-shrink: 0;
+}
+
+.mrws-cookie-banner__btn {
+	padding: 10px 24px;
+	font-size: 0.875rem;
+	font-weight: 600;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background 0.2s ease, transform 0.15s ease;
+	border: none;
+	line-height: 1.4;
+}
+
+.mrws-cookie-banner__btn--accept {
+	background: var(--mrws-primary, #4f46e5);
+	color: #fff;
+}
+
+.mrws-cookie-banner__btn--accept:hover {
+	background: var(--mrws-primary-hover, #4338ca);
+	transform: translateY(-1px);
+}
+
+.mrws-cookie-banner__btn--decline {
+	background: #e2e8f0;
+	color: #334155;
+}
+
+.mrws-cookie-banner__btn--decline:hover {
+	background: #cbd5e1;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Hidden state                                                       */
+/* ------------------------------------------------------------------ */
+.mrws-cookie-banner--hidden,
+.mrws-cookie-overlay--hidden {
+	display: none;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Responsive                                                         */
+/* ------------------------------------------------------------------ */
+@media (max-width: 600px) {
+	.mrws-cookie-banner {
+		flex-direction: column;
+		padding: 20px;
+		text-align: center;
+	}
+
+	.mrws-cookie-banner__actions {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.mrws-cookie-banner__btn {
+		flex: 1;
+	}
+}

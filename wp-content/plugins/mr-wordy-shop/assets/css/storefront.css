@@ -1,0 +1,193 @@
+/**
+ * MR Wordy Shop – Storefront Styles
+ *
+ * Sleek, modern product-grid layout with card design, hover effects,
+ * and responsive breakpoints.  CSS custom properties allow quick
+ * theming via the WordPress Customizer (values injected inline).
+ */
+
+/* ------------------------------------------------------------------ */
+/*  Custom-property defaults (overridden by Customizer inline styles) */
+/* ------------------------------------------------------------------ */
+:root {
+	--mrws-primary: #4f46e5;
+	--mrws-primary-hover: #4338ca;
+	--mrws-text: #1e293b;
+	--mrws-text-muted: #64748b;
+	--mrws-bg: #f8fafc;
+	--mrws-card-bg: #ffffff;
+	--mrws-card-radius: 12px;
+	--mrws-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+	--mrws-card-shadow-hover: 0 10px 25px rgba(0, 0, 0, 0.1), 0 4px 10px rgba(0, 0, 0, 0.06);
+	--mrws-columns: 3;
+	--mrws-gap: 28px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Product grid                                                       */
+/* ------------------------------------------------------------------ */
+.mr-wordy-shop-products {
+	display: grid;
+	grid-template-columns: repeat(var(--mrws-columns), 1fr);
+	gap: var(--mrws-gap);
+	padding: 20px 0;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Product card                                                       */
+/* ------------------------------------------------------------------ */
+.mr-wordy-shop-product {
+	background: var(--mrws-card-bg);
+	border-radius: var(--mrws-card-radius);
+	box-shadow: var(--mrws-card-shadow);
+	overflow: hidden;
+	transition: transform 0.25s ease, box-shadow 0.25s ease;
+	display: flex;
+	flex-direction: column;
+}
+
+.mr-wordy-shop-product:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--mrws-card-shadow-hover);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Product thumbnail                                                  */
+/* ------------------------------------------------------------------ */
+.mr-wordy-shop-product__image {
+	position: relative;
+	overflow: hidden;
+	aspect-ratio: 4 / 3;
+	background: var(--mrws-bg);
+}
+
+.mr-wordy-shop-product__image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.35s ease;
+}
+
+.mr-wordy-shop-product:hover .mr-wordy-shop-product__image img {
+	transform: scale(1.05);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Card body                                                          */
+/* ------------------------------------------------------------------ */
+.mr-wordy-shop-product__body {
+	padding: 20px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Title                                                              */
+/* ------------------------------------------------------------------ */
+.mr-wordy-shop-product__title {
+	font-size: 1.125rem;
+	font-weight: 600;
+	line-height: 1.4;
+	margin: 0 0 8px;
+	color: var(--mrws-text);
+}
+
+.mr-wordy-shop-product__title a {
+	color: inherit;
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+.mr-wordy-shop-product__title a:hover {
+	color: var(--mrws-primary);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Excerpt                                                            */
+/* ------------------------------------------------------------------ */
+.mr-wordy-shop-product__excerpt {
+	font-size: 0.9rem;
+	color: var(--mrws-text-muted);
+	line-height: 1.6;
+	margin-bottom: 16px;
+	flex: 1;
+}
+
+.mr-wordy-shop-product__excerpt p {
+	margin: 0;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Price                                                              */
+/* ------------------------------------------------------------------ */
+.mr-wordy-shop-product__price {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--mrws-primary);
+	margin: 0 0 12px;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Add-to-cart / view button                                          */
+/* ------------------------------------------------------------------ */
+.mr-wordy-shop-product__actions {
+	margin-top: auto;
+}
+
+.mr-wordy-shop-btn {
+	display: inline-block;
+	padding: 10px 22px;
+	font-size: 0.875rem;
+	font-weight: 600;
+	text-align: center;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background 0.2s ease, transform 0.15s ease;
+	text-decoration: none;
+	line-height: 1.4;
+}
+
+.mr-wordy-shop-btn--primary {
+	background: var(--mrws-primary);
+	color: #fff;
+}
+
+.mr-wordy-shop-btn--primary:hover {
+	background: var(--mrws-primary-hover);
+	transform: translateY(-1px);
+	color: #fff;
+}
+
+.mr-wordy-shop-btn--outline {
+	background: transparent;
+	color: var(--mrws-primary);
+	border: 2px solid var(--mrws-primary);
+}
+
+.mr-wordy-shop-btn--outline:hover {
+	background: var(--mrws-primary);
+	color: #fff;
+}
+
+.mr-wordy-shop-btn--small {
+	padding: 6px 14px;
+	font-size: 0.8125rem;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Responsive                                                         */
+/* ------------------------------------------------------------------ */
+@media (max-width: 960px) {
+	.mr-wordy-shop-products {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.mr-wordy-shop-products {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+}
